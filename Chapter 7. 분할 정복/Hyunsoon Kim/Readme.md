@@ -70,6 +70,63 @@
     }
     ```
     
+    ```c
+    #define _CRT_SECURE_NO_WARNINGS
+    
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+    char * reverse(char* str, int* idx, int* len) {
+    	char h = str[(*idx)++];
+    	
+    	if (h == 'b' || h == 'w') {
+    		char* cp = malloc(sizeof(char) * 2);
+    		cp[0] = h;
+    		cp[1] = '\0';
+    		*len = 1;
+    		return cp;
+    	}
+    
+    	int ulc, urc, llc, lrc;
+    	char * upperleft = reverse(str, idx, &ulc);
+    	char * upperright = reverse(str, idx, &urc);
+    	char * lowerleft = reverse(str, idx, &llc);
+    	char * lowerright = reverse(str, idx, &lrc);
+    
+    	int cai = 0;
+    	int sum = ulc + urc + llc + lrc;
+    	char* ca = malloc(sizeof(char)*(sum + 2));
+    
+    	char c1 = 'x';
+    	ca[cai++] = c1;
+    	for (int i = 0; i < llc; i++) ca[cai++] = lowerleft[i];
+    	for (int i = 0; i < lrc; i++) ca[cai++] = lowerright[i];
+    	for (int i = 0; i < ulc; i++) ca[cai++] = upperleft[i];
+    	for (int i = 0; i < urc; i++) ca[cai++] = upperright[i];
+    	char c2 = '\0';
+    	ca[cai++] = c2;
+    
+    	*len = sum + 1;
+    	return ca;
+    }
+    
+    int main() {
+    	int c;
+    	scanf("%d",&c);
+    	while (c--) {
+    		char str[1000] = { 0 };
+    		scanf("%s", str);
+    
+    		int idx, len;
+    		idx = len = 0;
+    		char* reverse_str = reverse(str, &idx, &len);
+    		printf("%s\n", reverse_str);
+    		free(reverse_str);
+    	}
+    	return 0;
+    }
+    ```
+    
 - 문제 : 울타리 잘라내기 (FENCE, 중)
 - 문제 : 팬미팅 (FANMEETING, 상)
 
