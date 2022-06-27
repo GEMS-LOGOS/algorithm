@@ -60,7 +60,6 @@ public class Main {
 
         ret = pack(capacity, cur+1);
 
-        //현재 물건을 고르는 경우
         if(vol[cur] <= capacity)
             ret = Math.max(ret,pack(capacity-vol[cur], cur+1) + val[cur]);
 
