@@ -36,15 +36,107 @@ void josephus(int n,int k){
 }
 ```
 
-- 외계 신호 분석
+- Indexed Priority Queue
 ```c
 #include <stdio.h>
-#include <queue>
-
 #define FORI(MAX) for(int i=0;i<MAX;i++)
 
-using namespace std;
-void signal(){
+struct Element {
+	int index, value;
+	bool operator<(const Element &o) const {
+		return value == o.value ? index < o.index : value < o.value;
+	}
+};
 
-}
+
+struct IndexedPriorityQueue {
+	Element *arr;
+	int *position;
+	int size;
+
+	IndexedPriorityQueue(int max) : size(0)
+	{
+		arr = new Element[max + 1];
+		position = new int[max + 1];
+	}
+
+	~IndexedPriorityQueue()
+	{
+		delete[] arr;
+		delete[] position;
+	}
+
+	void push(int i, int value)
+	{
+		++size;
+		arr[size] = { i, value };
+		position[i] = size;
+		up(size);
+	}
+
+	void change(int i, int value)
+	{
+		int cur = position[i];
+		int k = arr[cur].value;
+		arr[cur].value = value;
+		if (k < value)
+			down(cur);
+		else
+			up(cur);
+	}
+
+	void up(int cur)
+	{
+		while (cur > 1)
+		{
+			if (arr[cur].value >= arr[cur >> 1].value)
+				break;
+			swap(arr[cur], arr[cur >> 1]);
+			position[arr[cur].i] = cur;
+			cur >>= 1;
+		}
+		position[arr[cur].i] = cur;
+	}
+
+	void down(int cur)
+	{
+		while ((cur << 1) <= size)
+		{
+			int max;
+			if ((cur << 1) == size || (arr[cur << 1].value < arr[(cur << 1) + 1].value))
+				max = (cur << 1);
+			else
+				max = (cur << 1) + 1;
+			if (arr[cur].value <= arr[max].value)
+				break;
+			swap(arr[cur], arr[max]);
+			position[arr[cur].i] = cur;
+			cur = max;
+		}
+		position[arr[cur].i] = cur;
+	}
+
+	int pop()
+	{
+		int ret = arr[1].i;
+		arr[1] = arr[size--];
+		position[arr[1].i] = 1;
+		down(1);
+		return ret;
+	}
+
+	void del(int i)
+	{
+		int cur = position[i];
+		int k = arr[cur].value;
+		arr[cur] = arr[size--];
+		position[arr[cur].i] = cur;
+		if (arr[cur].value > k)
+			down(cur);
+		else
+			up(cur);
+	}
+};
+
+
 ```
