@@ -22,7 +22,7 @@
 - Every path from a given node to any of its descendant NIL nodes contains the same number of black nodes. (어떤 노드로부터 시작되어 리프 노드에 도달하는 모든 경로에는 모두 같은 개수의 블랙 노드가 있다.)
 ### 구현
 ```c
-// C 언어에서의 RBTNode의 구조
+// C 언어에서의 RBTNode의 구조, https://hyunipad.tistory.com/15
 typedef struct tagRBTNode {
 	struct tagRBTNode* Parent;
 	struct tagRBTNode* Left;
